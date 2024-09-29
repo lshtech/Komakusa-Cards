@@ -3,7 +3,7 @@
 --- MOD_ID: SANNYO
 --- MOD_AUTHOR: [AvilionAMillion]
 --- MOD_DESCRIPTION: Adds jokers and cards themed around the Touhou Project
---- VERSION: alpha-1.0
+--- VERSION: alpha-1.1
 
 ------------- MOD CODE ------------------
 sendDebugMessage('Komakusa Cards Initializing')
@@ -22,6 +22,8 @@ SMODS.Atlas {
 	px = 71, 
 	py = 95,
 }
+
+SMODS.Atlas({key = "modicon", path = "sannyo_icon.png", px = 34, py = 34}):register()
 
 -- Jokers
 SMODS.Joker {  -- Donation Box
@@ -127,6 +129,98 @@ SMODS.Joker {  -- Mini Hakkero
 	calc_dollar_bonus = function(self, card)
 		if card.ability.extra.money > 0 then
 			return card.ability.extra.money
+		end
+	end
+}
+
+SMODS.Joker {  -- Midnight Bird
+    key = 'midnightbird',
+    loc_txt = {
+        name = 'Midnight Bird',
+        text = {'Retrigger all played cards',
+		'of {C:spades}Spade{} suit'}
+    },
+    config = {extra = {repetitions = 1}},
+    rarity = 2,
+    pos = {x = 3,y = 0},
+    atlas = 'jokeratlas',
+    cost = 6,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+	loc_vars = function(self, info_queue)
+        return {vars = {self.config.extra.repetitions}}
+	end,
+	calculate = function(self, card, context)
+		if context.repetition then
+			if context.cardarea == G.play then
+				if context.other_card:is_suit("Spades") then
+					return {
+					message = localize('k_again_ex'),
+					repetitions = self.config.extra.repetitions,
+					card = card
+					}
+				end
+			end
+		end
+	end
+}
+
+SMODS.Joker {  -- Baka
+    key = 'baka',
+    loc_txt = {
+        name = 'Baka',
+        text = {'{C:chips}+#1#{} Chips.',
+		'{C:inactive}Baka.{}'}
+    },
+    config = {extra = {chips = 1}},
+    rarity = 1,
+    pos = {x = 4,y = 0},
+    atlas = 'jokeratlas',
+    cost = 1,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.chips}}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
+				chip_mod = card.ability.extra.chips,
+			}
+		end
+	end
+}
+
+SMODS.Joker {  -- Teh Strongest Jimbo
+    key = 'baka2',
+    loc_txt = {
+        name = 'TEH STRONGEST JIMBO',
+        text = {'{C:chips}+#1#{} Chips.',
+		'{C:inactive}Baka?{}'}
+    },
+    config = {extra = {chips = 1000}},
+    rarity = 3,
+    pos = {x = 5,y = 0},
+    atlas = 'jokeratlas',
+    cost = 1,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.chips}}
+	end,
+	in_pool = function(self)
+		return next(SMODS.find_card('j_sann_baka'))
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
+				chip_mod = card.ability.extra.chips,
+			}
 		end
 	end
 }
