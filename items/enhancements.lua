@@ -25,9 +25,9 @@ SMODS.Enhancement { -- Ofuda Card
 			},
 		},
 		loc_vars = function(self, info_queue)
-			return { vars = {self.config.x_mult, self.config.mult,}
+			return { vars = {self.config.x_mult, self.config.mult}}
 		end
 	}
-}
+
 
 
