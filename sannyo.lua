@@ -3,7 +3,7 @@
 --- MOD_ID: SANNYO
 --- MOD_AUTHOR: [AvilionAMillion]
 --- MOD_DESCRIPTION: Adds jokers and cards themed around the Touhou Project
---- VERSION: alpha-1.1
+--- VERSION: 1.1-alpha
 
 ------------- MOD CODE ------------------
 sendDebugMessage('Komakusa Cards Initializing')
